@@ -13,7 +13,7 @@ namespace Assignment
         public string itemDesc { get; set; }
         public double itemPrice { get; set; }
         public string customise { get; set; }
-        public string ToString()
+        public override string ToString()
         {
             return $"Item Name: {itemName}, Description: {itemDesc}, Price: {itemPrice.ToString()}, Customise: {customise}";
         }

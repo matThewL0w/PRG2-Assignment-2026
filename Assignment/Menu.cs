@@ -8,7 +8,7 @@ namespace Assignment
 {
     internal class Menu
     {
-        List<FoodItem> foodItems { get; set; } =  new List<FoodItem>();
+        public List<FoodItem> foodItems { get; set; } =  new List<FoodItem>();
         public string menuId { get; set; }
         public string menuName { get; set; }
         public void AddFoodItem(FoodItem item)
@@ -27,7 +27,7 @@ namespace Assignment
                 Console.WriteLine(foodItem.ToString());
             }
         }
-        public string ToString()
+        public override string ToString()
         {
             return $"Menu ID: {menuId}, Menu Name: {menuName}";
         }

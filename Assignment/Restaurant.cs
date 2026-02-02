@@ -53,7 +53,7 @@ namespace Assignment
             bool result = menus.Remove(menu);
             return result;
         }
-        public string ToString()
+        public override string ToString()
         {
             return $"Restaurant ID: {restaurantId}, Restaurant Name: {restaurantName}, Restaurant Email: {restaurantEmail}";
         }

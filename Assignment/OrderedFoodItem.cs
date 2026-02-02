@@ -13,6 +13,7 @@ namespace Assignment
         public double CalculateSubTotal()
         {
             return itemPrice * qtyOrdered;
+            return subTotal;
         }
         public OrderedFoodItem() { }
         public OrderedFoodItem(double ItemPrice, int quantity, double subtotal)
