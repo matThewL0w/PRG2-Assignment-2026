@@ -9,39 +9,41 @@ namespace Assignment
     internal class Restaurant
     {
         public List<Menu> menus = new List<Menu>();
+        public List<SpecialOffer> specialOffers { get; set; } = new List<SpecialOffer>();
+        public Queue<Order> orderQueue { get; set; } = new Queue<Order>();
         public string restaurantId { get; set; }
         public string restaurantName { get; set; }
         public string restaurantEmail { get; set; }
         public void DisplayOrders()
         {
-            Console.WriteLine($"Restaurant: {restaurantName}");
-            foreach (Menu m in menus)
+            foreach (Order queues in orderQueue)
             {
-                Console.WriteLine(m);        
-                m.DisplayFoodItems();        
-                Console.WriteLine();
+                Console.WriteLine(queues);
             }
         }
         public void DisplaySpecialOffers()
         {
             Console.WriteLine($"Special Offers at {restaurantName}:");
-            foreach (Menu m in menus)
+
+            if (specialOffers.Count == 0)
             {
-                foreach (FoodItem fi in m.foodItems)
-                {
-                    if (fi.customise.ToLower().Contains("special"))
-                    {
-                        Console.WriteLine(fi.ToString());
-                    }
-                }
+                Console.WriteLine("No special offers available.");
+                return;
+            }
+
+            foreach (SpecialOffer offer in specialOffers)
+            {
+                Console.WriteLine(offer);
             }
         }
-        public void DisplayMenus()
+        public void DisplayMenu()
         {
-            Console.WriteLine($"Menus at {restaurantName}:");
+            Console.WriteLine($"Restaurant: {restaurantName} ({restaurantId})");
             foreach (Menu m in menus)
             {
-                Console.WriteLine(m.ToString());
+                Console.WriteLine(m);
+                m.DisplayFoodItems();
+                Console.WriteLine();
             }
         }
         public void AddMenu(Menu menu)
