@@ -13,7 +13,7 @@ namespace Assignment
         public string restaurantEmail { get; set; }
         public List<Menu> menus { get; set; }
         private List<Order> orders = new List<Order>();
-        public List<Order> Orders { get; set; }
+        public Queue<Order> orderQueue { get; set; }
         private List<SpecialOffer> specialOffers = new List<SpecialOffer>();
         public List<SpecialOffer> SpecialOffers {get; set;}
         public Restaurant() { }
