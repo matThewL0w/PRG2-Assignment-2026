@@ -10,6 +10,7 @@ namespace Assignment
     {
         public string emailAddress { get; set; }
         public string customerName { get; set; }
+        public Customer() { }
         public Customer(string EmailAddress, string CustomerName)
         {
             emailAddress = EmailAddress;

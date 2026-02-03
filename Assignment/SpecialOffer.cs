@@ -10,6 +10,7 @@ namespace Assignment
     {
         public string offerCode { get; set; }
         public string offerDesc { get; set; }
+        public SpecialOffer() { }
         public SpecialOffer(string OfferCode, string OfferDesc)
         {
             offerCode = OfferCode;

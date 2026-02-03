@@ -10,16 +10,17 @@ namespace Assignment
     {
         public int qtyOrdered { get; set; }
         public double subTotal { get; set; }
-        public void CalculateSubTotal()
-        {
-            subTotal = itemPrice * qtyOrdered;
-        }
         public OrderedFoodItem() { }
         public OrderedFoodItem(double ItemPrice, int quantity, double subtotal)
         {
             itemPrice = ItemPrice;
             qtyOrdered = quantity;
             subTotal = subtotal;
+        }
+        public double CalculateSubTotal()
+        {
+            subTotal = itemPrice * qtyOrdered;
+            return (subTotal);
         }
     }
         
