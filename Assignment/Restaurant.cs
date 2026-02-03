@@ -8,10 +8,21 @@ namespace Assignment
 {
     internal class Restaurant
     {
-        public List<Menu> menus = new List<Menu>();
         public string restaurantId { get; set; }
         public string restaurantName { get; set; }
         public string restaurantEmail { get; set; }
+        public List<Menu> menus { get; set; }
+        private List<Order> orders = new List<Order>();
+        public List<Order> Orders { get; set; }
+        private List<SpecialOffer> specialOffers = new List<SpecialOffer>();
+        public List<SpecialOffer> SpecialOffers {get; set;}
+        public Restaurant() { }
+        public Restaurant(string id, string name, string email)
+        {
+            restaurantId = id;
+            restaurantName = name;
+            restaurantEmail = email;
+        }
         public void DisplayOrders()
         {
             Console.WriteLine($"Restaurant: {restaurantName}");
@@ -24,24 +35,21 @@ namespace Assignment
         }
         public void DisplaySpecialOffers()
         {
-            Console.WriteLine($"Special Offers at {restaurantName}:");
-            foreach (Menu m in menus)
+            foreach (SpecialOffer specialoffer in specialOffers)
             {
-                foreach (FoodItem fi in m.foodItems)
-                {
-                    if (fi.customise.ToLower().Contains("special"))
-                    {
-                        Console.WriteLine(fi.ToString());
-                    }
-                }
+                Console.WriteLine(specialoffer);
             }
+            
         }
-        public void DisplayMenus()
+        public void DisplayMenu()
         {
-            Console.WriteLine($"Menus at {restaurantName}:");
+            Console.WriteLine($"Restaurant: {restaurantName} ({restaurantId})");
             foreach (Menu m in menus)
             {
-                Console.WriteLine(m.ToString());
+                foreach (FoodItem f in m.foodItems)
+                {
+                    Console.WriteLine(f.ToString());
+                }
             }
         }
         public void AddMenu(Menu menu)
@@ -57,12 +65,6 @@ namespace Assignment
         {
             return $"Restaurant ID: {restaurantId}, Restaurant Name: {restaurantName}, Restaurant Email: {restaurantEmail}";
         }
-        public Restaurant() { }
-        public Restaurant(string id, string name, string email)
-        {
-            restaurantId = id;
-            restaurantName = name;
-            restaurantEmail = email;
-        }
+        
     }
 }

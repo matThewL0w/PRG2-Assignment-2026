@@ -13,10 +13,6 @@ namespace Assignment
         public string itemDesc { get; set; }
         public double itemPrice { get; set; }
         public string customise { get; set; }
-        public override string ToString()
-        {
-            return $"Item Name: {itemName}, Description: {itemDesc}, Price: {itemPrice.ToString()}, Customise: {customise}";
-        }
         public FoodItem() { }
         public FoodItem(string name, string desc, double price, string custom)
         {
@@ -24,6 +20,10 @@ namespace Assignment
             itemDesc = desc;
             itemPrice = price;
             customise = custom;
+        }
+        public override string ToString()
+        {
+            return $"  - {itemName}: {itemDesc} - ${itemPrice.ToString()}";
         }
     }
 }
