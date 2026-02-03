@@ -25,12 +25,9 @@ namespace Assignment
         }
         public void DisplayOrders()
         {
-            Console.WriteLine($"Restaurant: {restaurantName}");
-            foreach (Menu m in menus)
+            foreach (Order queues in orderQueue)
             {
-                Console.WriteLine(m);        
-                m.DisplayFoodItems();        
-                Console.WriteLine();
+                Console.WriteLine(queues);
             }
         }
         public void DisplaySpecialOffers()
