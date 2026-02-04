@@ -67,30 +67,16 @@ string[] orderlines = File.ReadAllLines("orders - Copy.csv");
 //OrderId,CustomerEmail,RestaurantId,DeliveryDate,DeliveryTime,DeliveryAddress,CreatedDateTime,TotalAmount,Status,Items
 for (int i = 1; i < orderlines.Count(); i++)
 {
+    string[] ordereditems = orderlines[i].Split("\"");
     string[] orderDATA = orderlines[i].Split(',');
-
-    Order order = new Order(
-        Convert.ToInt32(orderDATA[0]),
-        Convert.ToDateTime(orderDATA[6]),
-        Convert.ToDouble(orderDATA[7]),
-        orderDATA[8],
-        orderDATA[5],
-        "-",
-        true
-    );
-
-    // "Chicken Katsu Bento,1|Salmon Teriyaki Bento,1"
-    string[] orderedItems = orderDATA[9].Split('|');
-
-    foreach (string item in orderedItems)
     for (int j = 10; j < orderDATA.Length; j++)
     {
-        orderDATA[9] += orderDATA[j];
+        orderDATA[9] += $"{orderDATA[9]},{orderDATA[j]}";
     }
     //id datetime total status address paymentmethod paid
     Order order = new Order(Convert.ToInt32(orderDATA[0]), Convert.ToDateTime(orderDATA[6]), Convert.ToDouble(orderDATA[7]), orderDATA[8], orderDATA[5], "-", true);
-    string[] ordereditems = orderDATA[9].Split('|');
-    foreach (string item in ordereditems)
+    string[] ordereditem = ordereditems[1].Split('|');
+    foreach (string item in ordereditem)
     {
         string[] itemdetails = item.Split(',');
         int itemQty = Convert.ToInt32(itemdetails[1]);
@@ -136,24 +122,11 @@ for (int i = 1; i < orderlines.Count(); i++)
 }
 
 Console.WriteLine("Welcome to the Gruberoo Food Delivery System");
-Console.WriteLine($"{restaurants.Count} restaurants loaded.");
-Console.WriteLine($"{foodCount} food items loaded!");
-Console.WriteLine($"{customers.Count} customers loaded!"); 
-Console.WriteLine($"{orderlines.Count()} orders loaded!");
+Console.WriteLine($"{restaurants.Count()} restaurants loaded.");
+Console.WriteLine($"{foodlist.Count()} food items loaded!");
+Console.WriteLine($"{customers.Count()} customers loaded!"); 
+Console.WriteLine($"{orderlist.Count()} orders loaded!");
 
-
-//void DisplayAllOrders()
-//{
-//    Console.WriteLine();
-//    Console.WriteLine("All Orders:");
-//    Console.WriteLine("==========");
-//    foreach (Restaurant restaurant in restaurants)
-//    {
-
-
-//    }
-
-//}
 
 void DisplayAllOrders()
 {
