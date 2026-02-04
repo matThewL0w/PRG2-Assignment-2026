@@ -36,41 +36,42 @@ using (StreamReader foodinfo = new StreamReader("fooditems - Copy.csv"))
         }
     } 
 }
+
+using (StreamReader customerINFO = new StreamReader("customers.csv"))
+{
+    customerINFO.ReadLine(); //SKIP HEADER
+    while (!customerINFO.EndOfStream)// execute until the end of the file
+    {
+        string[] customerDATA = customerINFO.ReadLine().Split(',');
+        Customer customer = new Customer(customerDATA[0], customerDATA[1]); //Name then email
+        customers.Add(customer);
+    }
+}
+using (StreamReader orderINFO = new StreamReader("orders - Copy.csv"))
+{
+    orderINFO.ReadLine(); //SKIP HEADER
+    while (!orderINFO.EndOfStream)
+    {
+        string[] orderDATA = orderINFO.ReadLine().Split(',');
+        
+    }
+}
 Console.WriteLine("Welcome to the Gruberoo Food Delivery System");
 Console.WriteLine($"{restaurants.Count} restaurants loaded.");
 Console.WriteLine($"{foodCount} food items loaded!");
+Console.WriteLine($"{customers.Count} customers loaded!"); 
 
 
-void DisplayAllOrders()
-{
+//void DisplayAllOrders()
+//{
+//    Console.WriteLine();
+//    Console.WriteLine("All Orders:");
+//    Console.WriteLine("==========");
+//    foreach (Restaurant restaurant in restaurants)
+//    {
 
-}
 
-Console.WriteLine("\nAll Orders");
-Console.WriteLine("==========");
+//    }
 
-foreach (Restaurant r in restaurants)
-{
-    foreach (Order o in r.orderQueue)
-    {
-        string customerName = "Unknown";
+//}
 
-        foreach (Customer c in customers)
-        {
-            if (c.email == o.customerEmail)
-            {
-                customerName = c.name;
-                break;
-            }
-        }
-
-        Console.WriteLine(
-            $"Order ID: {o.orderId}\n" +
-            $"Customer: {customerName}\n" +
-            $"Restaurant: {r.restaurantName}\n" +
-            $"Delivery Time: {o.deliveryDateTime:dd/MM/yyyy HH:mm}\n" +
-            $"Total Amount: ${o.totalAmount:F2}\n" +
-            $"Status: {o.status}\n"
-        );
-    }
-}

@@ -12,10 +12,10 @@ namespace Assignment
         public string customerName { get; set; }
         public List<Order> orders { get; set; }
         public Customer() { }
-        public Customer(string EmailAddress, string CustomerName)
+        public Customer(string CustomerName, string CustomerEmail)
         {
-            emailAddress = EmailAddress;
             customerName = CustomerName;
+            emailAddress = CustomerEmail;
         }
         public void AddOrder(Order order)
         { 
