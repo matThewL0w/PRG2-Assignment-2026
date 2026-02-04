@@ -8,9 +8,15 @@ namespace Assignment
 {
     internal class Menu
     {
-        public List<FoodItem> foodItems { get; set; } =  new List<FoodItem>();
+        public List<FoodItem> foodItems { get; set; } = new List<FoodItem>();
         public string menuId { get; set; }
         public string menuName { get; set; }
+        public Menu(string id, string name)
+        {
+            menuId = id;
+            menuName = name;
+        }
+
         public void AddFoodItem(FoodItem item)
         {
             foodItems.Add(item);
@@ -31,11 +37,6 @@ namespace Assignment
         {
             return $"Menu ID: {menuId}, Menu Name: {menuName}";
         }
-        public Menu() { }
-        public Menu(string id, string name)
-        {
-            menuId = id;
-            menuName = name;
-        }
     }
+
 }

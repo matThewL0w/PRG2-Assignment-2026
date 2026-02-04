@@ -16,7 +16,7 @@ using (StreamReader reader = new StreamReader("restaurants.csv"))
     } 
 
 }
-
+int foodCount = 0;
 using (StreamReader foodinfo = new StreamReader("fooditems.csv"))
 {
     foodinfo.ReadLine(); //SKIP HEADER
@@ -30,10 +30,18 @@ using (StreamReader foodinfo = new StreamReader("fooditems.csv"))
             if (restaurant.restaurantId == restaurantId)
             {
                 restaurant.menus[0].foodItems.Add(foodItem);
+                foodCount++;
                 break;
             }
         }
     } 
 }
-
+Console.WriteLine("Welcome to the Gruberoo Food Delivery System");
 Console.WriteLine($"{restaurants.Count} restaurants loaded.");
+Console.WriteLine($"{foodCount} food items loaded!");
+
+
+void DisplayAllOrders()
+{
+
+}

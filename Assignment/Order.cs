@@ -19,7 +19,6 @@ namespace Assignment
         private List<OrderedFoodItem> orderedItems = new List<OrderedFoodItem>();
         public List<OrderedFoodItem> OrderedItems { get; set; }
         
-        public Order() { }
         public Order(int id, DateTime dateTime, double total, string status, string address, string paymentMethod, bool paid)
         {
             orderId = id;
