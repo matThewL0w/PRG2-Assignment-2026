@@ -5,6 +5,12 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
+//==========================================================
+// Student Number : S10271111E
+// Student Name : Lee Hua Jay
+// Partner Name : Low Yong Jin Matthew
+//==========================================================
+
 namespace Assignment
 {
     internal class Order

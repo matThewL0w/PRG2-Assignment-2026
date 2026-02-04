@@ -1,4 +1,16 @@
-﻿using System.Globalization;
+﻿//==========================================================
+// Student Number : S10272211E
+// Student Name : Low Yong Jin Matthew
+// Partner Name : Lee Hua Jay
+//==========================================================
+
+//==========================================================
+// Student Number : S10271111E
+// Student Name : Lee Hua Jay
+// Partner Name : Low Yong Jin Matthew
+//==========================================================
+
+using System.Globalization;
 using Assignment;
 List<Restaurant> restaurants = new List<Restaurant>();
 List<Customer> customers = new List<Customer>();
