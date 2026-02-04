@@ -64,55 +64,59 @@ using (StreamReader customerINFO = new StreamReader("customers.csv"))
 }
 string[] orderlines = File.ReadAllLines("orders - Copy.csv");
 //OrderId,CustomerEmail,RestaurantId,DeliveryDate,DeliveryTime,DeliveryAddress,CreatedDateTime,TotalAmount,Status,Items
-for (int i = 1; i < orderlines.Count(); i++) 
+for (int i = 1; i < orderlines.Count(); i++)
 {
     string[] orderDATA = orderlines[i].Split(',');
-    //id datetime total status address paymentmethod paid
-    Order order = new Order(Convert.ToInt32(orderDATA[0]), Convert.ToDateTime(orderDATA[6]), Convert.ToDouble(orderDATA[7]), orderDATA[8], orderDATA[5], "-" , true);
-    foreach (string orderload in orderDATA)
+    for (int j = 10; j < orderDATA.Length; j++)
     {
-        string[] ordereditems = orderDATA[9].Split(';');
-        foreach (string item in ordereditems)
+        orderDATA[9] += orderDATA[j];
+    }
+    //id datetime total status address paymentmethod paid
+    Order order = new Order(Convert.ToInt32(orderDATA[0]), Convert.ToDateTime(orderDATA[6]), Convert.ToDouble(orderDATA[7]), orderDATA[8], orderDATA[5], "-", true);
+    string[] ordereditems = orderDATA[9].Split('|');
+    foreach (string item in ordereditems)
+    {
+        string[] itemdetails = item.Split(',');
+        int itemQty = Convert.ToInt32(itemdetails[1]);
+        //"Chicken Katsu Bento,1|Salmon Teriyaki Bento,1"
+        string finalitem = itemdetails[0];
+        foreach (FoodItem food in foodlist)
         {
-            string[] itemsplitter = item.Split('|');
-            foreach (string indivitems in itemsplitter)
+            if (food.itemName == finalitem)
             {
-                string[] itemdetails = Convert.ToString(indivitems).Split(',');
-                int itemQty = Convert.ToInt32(itemdetails[1]);
-                //"Chicken Katsu Bento,1|Salmon Teriyaki Bento,1"
-                string finalitem = itemdetails[0];
-                OrderedFoodItem orderadder = new OrderedFoodItem();
-                foreach (FoodItem food in foodlist)
-                    if(food.itemName == finalitem)
-                    {
-                        OrderedFoodItem ordereplacer = new OrderedFoodItem(food.itemName, food.itemDesc, food.itemPrice, "-", itemQty);
-                        orderadder = ordereplacer;
-                        break;
-                    }//name, desc, price, customise
-                order.AddOrderedFoodItem(orderadder);
-            }
-        }
-        orderlist.Add(order);
-        for (int z = 0; z < customers.Count(); z++)
-        {
-            if (customers[z].emailAddress == orderDATA[1]) //CustomerEmail
-            {
-                customers[z].AddOrder(order);
-                break;
-            }
-        }
-        for (int x = 0; x < restaurants.Count(); x++)
-        {
-            if (restaurants[x].restaurantId == orderDATA[2]) //RestaurantId
-            {
-                restaurants[x].orderQueue.Enqueue(order);
+                order.AddOrderedFoodItem(
+                    new OrderedFoodItem(
+                        food.itemName,
+                        food.itemDesc,
+                        food.itemPrice,
+                        "-",
+                        itemQty
+                    )
+                );
                 break;
             }
         }
 
     }
-    
-    
+
+    orderlist.Add(order);
+    for (int z = 0; z < customers.Count(); z++)
+    {
+        if (customers[z].emailAddress == orderDATA[1]) //CustomerEmail
+        {
+            customers[z].AddOrder(order);
+            break;
+        }
+    }
+    for (int x = 0; x < restaurants.Count(); x++)
+    {
+        if (restaurants[x].restaurantId == orderDATA[2]) //RestaurantId
+        {
+            restaurants[x].orderQueue.Enqueue(order);
+            break;
+        }
+    }
+
 }
 
 Console.WriteLine("Welcome to the Gruberoo Food Delivery System");
@@ -121,7 +125,11 @@ Console.WriteLine($"{foodCount} food items loaded!");
 Console.WriteLine($"{customers.Count} customers loaded!"); 
 Console.WriteLine($"{orderlines.Count()} orders loaded!");
 
-
+Console.WriteLine(restaurants);
+Console.WriteLine(orderlist);
+Console.WriteLine(foodlist);
+Console.WriteLine(customers);
+customers[0].DisplayAllOrders();
 //void DisplayAllOrders()
 //{
 //    Console.WriteLine();

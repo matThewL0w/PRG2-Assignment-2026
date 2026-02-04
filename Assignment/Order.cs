@@ -22,9 +22,9 @@ namespace Assignment
         public string deliveryAddress { get; set; }
         public string orderPaymentMethod { get; set; }
         public bool orderPaid { get; set; }
-        private List<OrderedFoodItem> orderedItems = new List<OrderedFoodItem>();
-        public List<OrderedFoodItem> OrderedItems { get; set; }
-        
+        public List<OrderedFoodItem> OrderedItems { get; } = new List<OrderedFoodItem>();
+
+
         public Order(int id, DateTime dateTime, double total, string status, string address, string paymentMethod, bool paid)
         {
             orderId = id;
