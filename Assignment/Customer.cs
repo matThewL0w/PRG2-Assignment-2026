@@ -10,6 +10,7 @@ namespace Assignment
     {
         public string emailAddress { get; set; }
         public string customerName { get; set; }
+        public List<Order> orders { get; set; }
         public Customer() { }
         public Customer(string EmailAddress, string CustomerName)
         {
@@ -17,8 +18,20 @@ namespace Assignment
             customerName = CustomerName;
         }
         public void AddOrder(Order order)
+        { 
+            orders.Add(order);
+        }
+        public void DisplayAllOrders()
         {
-            //put stuff here, error shld go away after implementing Order class
+            for (int i = 0; i < orders.Count(); i++)
+            {
+                Console.WriteLine($"{i+1}. {orders[i].orderId} - {orders[i].orderStatus}");
+            }
+        }
+           
+        public bool RemoveOrder(Order order)
+        {
+            return orders.Remove(order);
         }
         public override string ToString()
         {
