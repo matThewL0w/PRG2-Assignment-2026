@@ -10,6 +10,7 @@ namespace Assignment
     {
         public int qtyOrdered { get; set; }
         public double subTotal { get; set; }
+        public OrderedFoodItem() { }
         public OrderedFoodItem(string name, string desc, double price, string customise, int quantity) : base(name, desc, price, customise)
         {
             qtyOrdered = quantity;
