@@ -15,6 +15,8 @@ using Assignment;
 List<Restaurant> restaurants = new List<Restaurant>();
 List<Customer> customers = new List<Customer>();
 List<FoodItem> foodlist = new List<FoodItem>();
+List<Order> orderlist = new List<Order>();
+
 using (StreamReader reader = new StreamReader("restaurants.csv"))
 {
     reader.ReadLine(); //SKIP HEADER
@@ -90,7 +92,24 @@ for (int i = 1; i < orderlines.Count(); i++)
                 order.AddOrderedFoodItem(orderadder);
             }
         }
-        
+        orderlist.Add(order);
+        for (int z = 0; z < customers.Count(); z++)
+        {
+            if (customers[z].emailAddress == orderDATA[1]) //CustomerEmail
+            {
+                customers[z].AddOrder(order);
+                break;
+            }
+        }
+        for (int x = 0; x < restaurants.Count(); x++)
+        {
+            if (restaurants[x].restaurantId == orderDATA[2]) //RestaurantId
+            {
+                restaurants[x].orderQueue.Enqueue(order);
+                break;
+            }
+        }
+
     }
     
     
