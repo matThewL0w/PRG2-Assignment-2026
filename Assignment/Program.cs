@@ -62,11 +62,27 @@ using (StreamReader customerINFO = new StreamReader("customers.csv"))
         customers.Add(customer);
     }
 }
+
 string[] orderlines = File.ReadAllLines("orders - Copy.csv");
 //OrderId,CustomerEmail,RestaurantId,DeliveryDate,DeliveryTime,DeliveryAddress,CreatedDateTime,TotalAmount,Status,Items
 for (int i = 1; i < orderlines.Count(); i++)
 {
     string[] orderDATA = orderlines[i].Split(',');
+
+    Order order = new Order(
+        Convert.ToInt32(orderDATA[0]),
+        Convert.ToDateTime(orderDATA[6]),
+        Convert.ToDouble(orderDATA[7]),
+        orderDATA[8],
+        orderDATA[5],
+        "-",
+        true
+    );
+
+    // "Chicken Katsu Bento,1|Salmon Teriyaki Bento,1"
+    string[] orderedItems = orderDATA[9].Split('|');
+
+    foreach (string item in orderedItems)
     for (int j = 10; j < orderDATA.Length; j++)
     {
         orderDATA[9] += orderDATA[j];
@@ -125,11 +141,7 @@ Console.WriteLine($"{foodCount} food items loaded!");
 Console.WriteLine($"{customers.Count} customers loaded!"); 
 Console.WriteLine($"{orderlines.Count()} orders loaded!");
 
-Console.WriteLine(restaurants);
-Console.WriteLine(orderlist);
-Console.WriteLine(foodlist);
-Console.WriteLine(customers);
-customers[0].DisplayAllOrders();
+
 //void DisplayAllOrders()
 //{
 //    Console.WriteLine();
@@ -143,3 +155,10 @@ customers[0].DisplayAllOrders();
 
 //}
 
+void DisplayAllOrders()
+{
+    Console.WriteLine("All Orders");
+    Console.WriteLine("==========");
+    Console.WriteLine($"{"Order ID",-9}  {"Customer",-13}  {"Restaurant",-15}  {"Delivery Date/Time",-18}  {"Amount",-7}  {"Status",-9}");
+    Console.WriteLine($"{"---------",-9}  {"----------",-13}  {"-------------",-15}  {"------------------",-18}  {"------",-7}  {"---------",-9}");
+}
