@@ -60,41 +60,54 @@ using (StreamReader customerINFO = new StreamReader("customers.csv"))
         customers.Add(customer);
     }
 }
+
 string[] orderlines = File.ReadAllLines("orders - Copy.csv");
-//OrderId,CustomerEmail,RestaurantId,DeliveryDate,DeliveryTime,DeliveryAddress,CreatedDateTime,TotalAmount,Status,Items
-for (int i = 1; i < orderlines.Count(); i++) 
+
+for (int i = 1; i < orderlines.Length; i++)
 {
     string[] orderDATA = orderlines[i].Split(',');
-    //id datetime total status address paymentmethod paid
-    Order order = new Order(Convert.ToInt32(orderDATA[0]), Convert.ToDateTime(orderDATA[6]), Convert.ToDouble(orderDATA[7]), orderDATA[8], orderDATA[5], "-" , true);
-    foreach (string orderload in orderDATA)
+
+    Order order = new Order(
+        Convert.ToInt32(orderDATA[0]),
+        Convert.ToDateTime(orderDATA[6]),
+        Convert.ToDouble(orderDATA[7]),
+        orderDATA[8],
+        orderDATA[5],
+        "-",
+        true
+    );
+
+    // "Chicken Katsu Bento,1|Salmon Teriyaki Bento,1"
+    string[] orderedItems = orderDATA[9].Split('|');
+
+    foreach (string item in orderedItems)
     {
-        string[] ordereditems = orderDATA[9].Split(';');
-        foreach (string item in ordereditems)
+        string[] itemDetails = item.Split(',');
+
+        string itemName = itemDetails[0];
+        int itemQty = Convert.ToInt32(itemDetails[1]);
+
+        foreach (FoodItem food in foodlist)
         {
-            string[] itemsplitter = item.Split('|');
-            foreach (string indivitems in itemsplitter)
+            if (food.itemName == itemName)
             {
-                string[] itemdetails = Convert.ToString(indivitems).Split(',');
-                int itemQty = Convert.ToInt32(itemdetails[1]);
-                //"Chicken Katsu Bento,1|Salmon Teriyaki Bento,1"
-                string finalitem = itemdetails[0];
-                OrderedFoodItem orderadder = new OrderedFoodItem();
-                foreach (FoodItem food in foodlist)
-                    if(food.itemName == finalitem)
-                    {
-                        OrderedFoodItem ordereplacer = new OrderedFoodItem(food.itemName, food.itemDesc, food.itemPrice, "-", itemQty);
-                        orderadder = ordereplacer;
-                        break;
-                    }//name, desc, price, customise
-                order.AddOrderedFoodItem(orderadder);
+                OrderedFoodItem orderedFood = new OrderedFoodItem(
+                    food.itemName,
+                    food.itemDesc,
+                    food.itemPrice,
+                    "-",
+                    itemQty
+                );
+
+                order.AddOrderedFoodItem(orderedFood);
+                break;
             }
         }
-        
     }
-    
-    
+
+    // add order to customer + restaurant here
 }
+
 
 Console.WriteLine("Welcome to the Gruberoo Food Delivery System");
 Console.WriteLine($"{restaurants.Count} restaurants loaded.");
@@ -103,16 +116,10 @@ Console.WriteLine($"{customers.Count} customers loaded!");
 Console.WriteLine($"{orderlines.Count()} orders loaded!");
 
 
-//void DisplayAllOrders()
-//{
-//    Console.WriteLine();
-//    Console.WriteLine("All Orders:");
-//    Console.WriteLine("==========");
-//    foreach (Restaurant restaurant in restaurants)
-//    {
-
-
-//    }
-
-//}
-
+void DisplayAllOrders()
+{
+    Console.WriteLine("All Orders");
+    Console.WriteLine("==========");
+    Console.WriteLine($"{"Order ID",-9}  {"Customer",-13}  {"Restaurant",-15}  {"Delivery Date/Time",-18}  {"Amount",-7}  {"Status",-9}");
+    Console.WriteLine($"{"---------",-9}  {"----------",-13}  {"-------------",-15}  {"------------------",-18}  {"------",-7}  {"---------",-9}");
+}
