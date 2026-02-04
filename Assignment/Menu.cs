@@ -35,7 +35,7 @@ namespace Assignment
         }
         public override string ToString()
         {
-            return $"Menu ID: {menuId}, Menu Name: {menuName}";
+            return $"Restaurant: {menuName} ({menuId})";
         }
     }
 

@@ -17,7 +17,7 @@ using (StreamReader reader = new StreamReader("restaurants.csv"))
 
 }
 int foodCount = 0;
-using (StreamReader foodinfo = new StreamReader("fooditems.csv"))
+using (StreamReader foodinfo = new StreamReader("fooditems - Copy.csv"))
 {
     foodinfo.ReadLine(); //SKIP HEADER
     while (!foodinfo.EndOfStream)// execute until the end of the file
@@ -44,4 +44,33 @@ Console.WriteLine($"{foodCount} food items loaded!");
 void DisplayAllOrders()
 {
 
+}
+
+Console.WriteLine("\nAll Orders");
+Console.WriteLine("==========");
+
+foreach (Restaurant r in restaurants)
+{
+    foreach (Order o in r.orderQueue)
+    {
+        string customerName = "Unknown";
+
+        foreach (Customer c in customers)
+        {
+            if (c.email == o.customerEmail)
+            {
+                customerName = c.name;
+                break;
+            }
+        }
+
+        Console.WriteLine(
+            $"Order ID: {o.orderId}\n" +
+            $"Customer: {customerName}\n" +
+            $"Restaurant: {r.restaurantName}\n" +
+            $"Delivery Time: {o.deliveryDateTime:dd/MM/yyyy HH:mm}\n" +
+            $"Total Amount: ${o.totalAmount:F2}\n" +
+            $"Status: {o.status}\n"
+        );
+    }
 }

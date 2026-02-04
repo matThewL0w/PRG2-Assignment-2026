@@ -22,6 +22,7 @@ namespace Assignment
             restaurantId = id;
             restaurantName = name;
             restaurantEmail = email;
+            menus = new List<Menu>();
         }
         public void DisplayOrders()
         {
