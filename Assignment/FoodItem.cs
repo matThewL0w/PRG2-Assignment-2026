@@ -5,6 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//==========================================================
+// Student Number : S10272211E
+// Student Name : Low Yong Jin Matthew
+// Partner Name : Lee Hua Jay
+//==========================================================
+
 namespace Assignment
 {
     internal class FoodItem
