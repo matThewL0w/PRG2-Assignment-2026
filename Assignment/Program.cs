@@ -132,6 +132,38 @@ void DisplayAllOrders()
 {
     Console.WriteLine("All Orders");
     Console.WriteLine("==========");
-    Console.WriteLine($"{"Order ID",-9}  {"Customer",-13}  {"Restaurant",-15}  {"Delivery Date/Time",-18}  {"Amount",-7}  {"Status",-9}");
-    Console.WriteLine($"{"---------",-9}  {"----------",-13}  {"-------------",-15}  {"------------------",-18}  {"------",-7}  {"---------",-9}");
+    Console.WriteLine(
+        $"{"Order ID",-9}  {"Customer",-13}  {"Restaurant",-15}  {"Delivery Date/Time",-18}  {"Amount",-7}  {"Status",-9}"
+    );
+    Console.WriteLine(
+        $"{"---------",-9}  {"----------",-13}  {"-------------",-15}  {"------------------",-18}  {"------",-7}  {"---------",-9}"
+    );
+
+    foreach (Restaurant restaurant in restaurants)
+    {
+        foreach (Order order in restaurant.orderQueue)
+        {
+            string customerName = "Unknown";
+
+            // Find which customer owns this order
+            foreach (Customer customer in customers)
+            {
+                if (customer.orders.Contains(order))
+                {
+                    customerName = customer.customerName;
+                    break;
+                }
+            }
+
+            Console.WriteLine(
+                $"{order.orderId,-9}  " +
+                $"{customerName,-13}  " +
+                $"{restaurant.restaurantName,-15}  " +
+                $"{order.orderDateTime:dd/MM/yyyy HH:mm}    " +
+                $"${order.orderTotal,-6:F2}  " +
+                $"{order.orderStatus,-9}"
+            );
+        }
+    }
 }
+DisplayAllOrders();
