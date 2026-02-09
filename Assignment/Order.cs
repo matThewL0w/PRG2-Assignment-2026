@@ -54,7 +54,7 @@ namespace Assignment
             bool result = OrderedItems.Remove(item);
             return result;
         }
-        public void DisplayFoodItems()
+        public void DisplayOrderedFoodItems()
         {
             for (int i = 0; i < OrderedItems.Count(); i++)
             {

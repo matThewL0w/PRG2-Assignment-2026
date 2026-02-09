@@ -34,9 +34,11 @@ namespace Assignment
         }
         public void DisplayFoodItems()
         {
-            foreach (FoodItem foodItem in foodItems)
+            //foreach (FoodItem foodItem in foodItems)
+                //{Console.WriteLine(foodItem.ToString());}
+            for (int i = 0; i < foodItems.Count(); i++)
             {
-                Console.WriteLine(foodItem.ToString());
+                Console.WriteLine($"{i + 1}. {foodItems[i].itemName} - ${foodItems[i].itemPrice}");
             }
         }
         public override string ToString()

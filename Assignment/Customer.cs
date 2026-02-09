@@ -17,6 +17,7 @@ namespace Assignment
         public string emailAddress { get; set; }
         public string customerName { get; set; }
         public List<Order> orders { get; set; } = new List<Order>();
+        public Customer() { }
         public Customer(string CustomerName, string CustomerEmail)
         {
             customerName = CustomerName;
