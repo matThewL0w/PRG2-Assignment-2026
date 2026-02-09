@@ -681,7 +681,6 @@ void ProcessOrder()
 void DisplayTotalOrderAmount()
 {
     const double deliveryFee = 5.00;
-    const double commissionRate = 0.30;
     double grandTotal = 0.0;
     double refundTotal = 0.0;
     Console.WriteLine("Total Order Amount Summary");
@@ -696,7 +695,7 @@ void DisplayTotalOrderAmount()
             double foodTotal = order.orderTotal - deliveryFee;
             if (order.orderStatus == "Delivered")
             {
-                restaurantEarn += (foodTotal * commissionRate + foodTotal);
+                restaurantEarn += (foodTotal);
             }
             else if (order.orderStatus == "Rejected" || order.orderStatus == "Cancelled")
             {
