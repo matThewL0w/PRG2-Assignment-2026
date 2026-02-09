@@ -140,7 +140,8 @@ while (true)
     Console.WriteLine("4. Processs an order");
     Console.WriteLine("5. Modify an existing order");
     Console.WriteLine("6. Delete an existing order");
-    Console.WriteLine("7. Exit");
+    Console.WriteLine("7. Display Total Order Amount");
+    Console.WriteLine("8. Exit");
     Console.Write("Enter your choice: ");
     int choice = Convert.ToInt32(Console.ReadLine());
     if (choice == 1)
@@ -172,6 +173,10 @@ while (true)
         return;
     }
     else if (choice == 7)
+    {
+        DisplayTotalOrderAmount();
+    }
+    else if (choice == 8)
     {
         Console.WriteLine("Exiting the system. Goodbye!");
         break;
@@ -671,4 +676,45 @@ void ProcessOrder()
 
 
     }
+}
+
+void DisplayTotalOrderAmount()
+{
+    const double deliveryFee = 5.00;
+    const double commissionRate = 0.30;
+    double grandTotal = 0.0;
+    double refundTotal = 0.0;
+    Console.WriteLine("Total Order Amount Summary");
+    Console.WriteLine("==========================");
+    foreach (Restaurant restaurant in restaurants)
+    {
+        double restaurantEarn = 0.0;
+        double restaurantRefundTotal = 0.0;
+
+        foreach (Order order in restaurant.orderQueue)
+        {
+            double foodTotal = order.orderTotal - deliveryFee;
+            if (order.orderStatus == "Delivered")
+            {
+                restaurantEarn += (foodTotal * commissionRate + foodTotal);
+            }
+            else if (order.orderStatus == "Rejected" || order.orderStatus == "Cancelled")
+            {
+                restaurantRefundTotal += foodTotal;
+            }
+        }
+        Console.WriteLine($"Restaurant: {restaurant.restaurantName}");
+        Console.WriteLine($"  Total Delivered Orders Amount: ${restaurantEarn:F2}");
+        Console.WriteLine($"  Total Refunds: ${restaurantRefundTotal:F2}");
+        Console.WriteLine();
+
+        grandTotal += restaurantEarn;
+        refundTotal += restaurantRefundTotal;
+    }
+
+    Console.WriteLine("Overall Summary");
+    Console.WriteLine("---------------");
+    Console.WriteLine($"Total Order Amount: ${grandTotal:F2}");
+    Console.WriteLine($"Total Refunds: ${refundTotal:F2}");
+    Console.WriteLine($"Final Amount Gruberoo Earns: ${(grandTotal - refundTotal):F2}");
 }
