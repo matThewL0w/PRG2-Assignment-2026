@@ -899,7 +899,7 @@ void ProcessOrder()
 
         Console.WriteLine($"Customer: {customerName}");
         Console.WriteLine("Ordered Items:");
-        order.DisplayFoodItems();
+        order.DisplayOrderedFoodItems();
         Console.WriteLine($"Delivery date/time: {order.orderDateTime:dd/MM/yyyy HH:mm}");
         Console.WriteLine($"Total Amount: ${order.orderTotal:F2}");
         Console.WriteLine($"Order Status: {order.orderStatus}");
@@ -939,56 +939,57 @@ void ProcessOrder()
 
 
     }
-
-    void BulkProcessing()
-{
-    int processedCounter = 0; // set up counters
-    int rejectedCounter = 0;
-    int preparingCounter = 0;
-    int totalCounter = 0;
-    foreach (Order order in orderlist)
-    {
-        totalCounter++;
-
-        if (order.orderStatus == "Pending")
-        {
-            processedCounter++;
-
-            TimeSpan timeLeft = order.deliveryDateTime - DateTime.Now;
-
-            if (timeLeft.TotalMinutes < 60)
-            {
-                order.orderStatus = "Rejected";
-                refundStack.Push(order);
-                rejectedCounter++;
-            }
-            else
-            {
-                order.orderStatus = "Preparing";
-                preparingCounter++;
-            }
-        }
-    }
-
-    double percentageProcessed = 0;
-
-    if (totalCounter > 0)
-    {
-        percentageProcessed = (double)processedCounter * 100 / totalCounter;
-    }
-
-
-    Console.WriteLine($"Total Pending Orders Processed: {processedCounter}");
-    Console.WriteLine(
-        $"Total Orders 'Preparing' vs 'Rejected': {preparingCounter} vs {rejectedCounter}"
-    );
-    Console.WriteLine(
-        $"Percentage of Automatically Processed Orders: {percentageProcessed:F2}%"
-    );
 }
 
-void DisplayTotalOrderAmount() //Assuming that 30% commission is already insided the order total
-{
+    void BulkProcessing()
+    {
+        int processedCounter = 0; // set up counters
+        int rejectedCounter = 0;
+        int preparingCounter = 0;
+        int totalCounter = 0;
+        foreach (Order order in orderlist)
+        {
+            totalCounter++;
+
+            if (order.orderStatus == "Pending")
+            {
+                processedCounter++;
+
+                TimeSpan timeLeft = order.deliveryDateTime - DateTime.Now;
+
+                if (timeLeft.TotalMinutes < 60)
+                {
+                    order.orderStatus = "Rejected";
+                    refundStack.Push(order);
+                    rejectedCounter++;
+                }
+                else
+                {
+                    order.orderStatus = "Preparing";
+                    preparingCounter++;
+                }
+            }
+        }
+
+        double percentageProcessed = 0;
+
+        if (totalCounter > 0)
+        {
+            percentageProcessed = (double)processedCounter * 100 / totalCounter;
+        }
+
+
+        Console.WriteLine($"Total Pending Orders Processed: {processedCounter}");
+        Console.WriteLine(
+            $"Total Orders 'Preparing' vs 'Rejected': {preparingCounter} vs {rejectedCounter}"
+        );
+        Console.WriteLine(
+            $"Percentage of Automatically Processed Orders: {percentageProcessed:F2}%"
+        );
+    }
+
+    void DisplayTotalOrderAmount() //Assuming that 30% commission is already insided the order total
+    {
         const double deliveryFee = 5.00;
         double grandTotal = 0.0;
         double refundTotal = 0.0;
@@ -1027,3 +1028,4 @@ void DisplayTotalOrderAmount() //Assuming that 30% commission is already insided
         Console.WriteLine($"Final Amount Gruberoo Earns: ${(grandTotal - refundTotal):F2}");
 
     }
+
