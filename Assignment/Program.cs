@@ -183,7 +183,7 @@ for (int i = 1; i < orderlines.Count(); i++)
     {
         if (restaurants[x].restaurantId == orderDATA[2]) //RestaurantId
         {
-            restaurants[x].orderQueue.Enqueue(order);
+            restaurants[x].orderQueue.Add(order);
             break;
         }
     }
@@ -541,7 +541,7 @@ void DisplayAllOrders()
         createdorder.orderPaymentMethod = paymentmethod.ToUpper();
         Console.WriteLine($"Order {createdorder.orderId} created successfully! Status: {createdorder.orderStatus}");
         selectedcustomer.AddOrder(createdorder);
-        selectedrestaurant.orderQueue.Enqueue(createdorder);
+        selectedrestaurant.orderQueue.Add(createdorder);
         orderlist.Add(createdorder);
     }
 
@@ -687,6 +687,7 @@ void ModifyExistingOrder()
     }
     Console.Write("Enter Order ID: ");
     string chosenorderId = Console.ReadLine();
+    bool valid = true;
     do
     {
         foreach (Order order in selectedcustomer.orders)
@@ -694,12 +695,13 @@ void ModifyExistingOrder()
             if (chosenorderId == Convert.ToString(order.orderId))
             {
                 selectedOrder = order;
+                valid = false;
                 break;
             }
         }
         Console.Write("Invalid order ID. Please enter a valid order ID: ");
         chosenorderId = Console.ReadLine();
-    } while (true);
+    } while (valid);
     Console.WriteLine("Address:");
     Console.WriteLine(selectedOrder.deliveryAddress);
     Console.WriteLine("Delivery Date/Time:");
