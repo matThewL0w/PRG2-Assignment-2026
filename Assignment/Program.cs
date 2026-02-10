@@ -1084,7 +1084,7 @@ void ProcessOrder()
         Console.WriteLine("---------------");
         Console.WriteLine($"Total Order Amount: ${grandTotal:F2}");
         Console.WriteLine($"Total Refunds: ${refundTotal:F2}");
-        Console.WriteLine($"Final Amount Gruberoo Earns: ${(grandTotal):F2}");
+        Console.WriteLine($"Final Amount Gruberoo Earns: ${(grandTotal - refundTotal):F2}");
 
     }
 
