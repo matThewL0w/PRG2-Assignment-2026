@@ -242,7 +242,7 @@ while (true)
     }
     else if (choice == 8)
     {
-        //BulkProcessing()
+        BulkProcessing();
     }
 
     else if (choice == 0)
@@ -959,36 +959,35 @@ void ProcessOrder()
     Console.WriteLine("=============");
     Console.Write("Enter Restaurant ID: ");
     string restaurantId = Console.ReadLine();
-
-    Restaurant selectedRestaurant = null;
-
+    Restaurant SelectedRestaurant = null;
+    Console.WriteLine();
     foreach (Restaurant restaurant in restaurants)
     {
         if (restaurant.restaurantId == restaurantId)
         {
-            selectedRestaurant = restaurant;
+            SelectedRestaurant = restaurant;
             break;
         }
+        else
+        {
+            Console.WriteLine("Restaurant not found.");
+            return;
+        }
     }
-
-    if (selectedRestaurant == null)
+    if (SelectedRestaurant.orderQueue.Count == 0 || SelectedRestaurant == null)
     {
-        Console.WriteLine("Restaurant not found.");
+        Console.WriteLine("No pending orders for this restaurant./Restaurant not found");
         return;
     }
+    int orderCount = SelectedRestaurant.orderQueue.Count;
 
-    if (selectedRestaurant.orderQueue.Count == 0)
+    for (int i = 0; i < orderCount; i++)
     {
-        Console.WriteLine("No pending orders for this restaurant.");
-        return;
-    }
+        Order order = SelectedRestaurant.orderQueue.Dequeue();
 
-    // 🔹 LOOP THROUGH LIST (no dequeue anymore)
-    foreach (Order order in selectedRestaurant.orderQueue)
-    {
         Console.WriteLine($"Order {order.orderId}:");
 
-        // find customer name
+        // Find customer name
         string customerName = "Unknown";
         foreach (Customer c in customers)
         {
@@ -997,11 +996,16 @@ void ProcessOrder()
                 customerName = c.customerName;
                 break;
             }
+            else
+            {
+                Console.WriteLine("Customer not found.");
+                return;
+            }
         }
 
         Console.WriteLine($"Customer: {customerName}");
         Console.WriteLine("Ordered Items:");
-        order.DisplayOrderedFoodItems();
+        order.DisplayFoodItems();
         Console.WriteLine($"Delivery date/time: {order.orderDateTime:dd/MM/yyyy HH:mm}");
         Console.WriteLine($"Total Amount: ${order.orderTotal:F2}");
         Console.WriteLine($"Order Status: {order.orderStatus}");
@@ -1017,7 +1021,6 @@ void ProcessOrder()
         else if (choice == "R" && order.orderStatus == "Pending")
         {
             order.orderStatus = "Rejected";
-            refundStack.Push(order);
             Console.WriteLine($"Order {order.orderId} rejected. Refund processed.");
         }
         else if (choice == "S" && order.orderStatus == "Cancelled")
@@ -1035,10 +1038,15 @@ void ProcessOrder()
         }
 
         Console.WriteLine();
-    }
-}
 
-void BulkProcessing()
+        SelectedRestaurant.orderQueue.Enqueue(order);
+
+
+
+
+    }
+
+    void BulkProcessing()
 {
     int processedCounter = 0; // set up counters
     int rejectedCounter = 0;
