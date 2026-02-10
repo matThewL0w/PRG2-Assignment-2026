@@ -203,7 +203,7 @@ while (true)
     Console.WriteLine("1. List all restaurants and menu items");
     Console.WriteLine("2. List all orders");
     Console.WriteLine("3. Create a new order");
-    Console.WriteLine("4. Processs an order");
+    Console.WriteLine("4. Process an order");
     Console.WriteLine("5. Modify an existing order");
     Console.WriteLine("6. Delete an existing order");
     Console.WriteLine("7. Display total order amount");
@@ -632,6 +632,15 @@ void DeleteOrder()
     {
         selectedOrder.orderStatus = "Cancelled";
         refundStack.Push(selectedOrder);
+
+        foreach (Restaurant r in restaurants)
+        {
+            if (r.orderQueue.Contains(selectedOrder))
+            {
+                r.orderQueue.Remove(selectedOrder);
+                break;
+            }
+        }
 
         Console.WriteLine(
             $"Order {selectedOrder.orderId} cancelled. " +
