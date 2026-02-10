@@ -140,8 +140,9 @@ while (true)
     Console.WriteLine("4. Processs an order");
     Console.WriteLine("5. Modify an existing order");
     Console.WriteLine("6. Delete an existing order");
-    Console.WriteLine("7. Display Total Order Amount");
-    Console.WriteLine("8. Exit");
+    Console.WriteLine("7. Display total order amount");
+    Console.WriteLine("8. Bulk processing of orders");
+    Console.WriteLine("0. Exit");
     Console.Write("Enter your choice: ");
     int choice = Convert.ToInt32(Console.ReadLine());
     if (choice == 1)
@@ -155,7 +156,7 @@ while (true)
     }
     else if (choice == 3)
     {
-        Console.WriteLine("Implement in the future");
+        OrderCreation();
     }
     else if (choice == 4)
     {
@@ -177,6 +178,11 @@ while (true)
         DisplayTotalOrderAmount();
     }
     else if (choice == 8)
+    {
+        //BulkProcessing()
+    }
+
+    else if (choice == 0)
     {
         Console.WriteLine("Exiting the system. Goodbye!");
         break;
