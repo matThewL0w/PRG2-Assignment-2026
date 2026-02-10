@@ -1073,5 +1073,3 @@ void ProcessOrder()
         Console.WriteLine($"Final Amount Gruberoo Earns: ${(grandTotal - refundTotal):F2}");
 
     }
-
-
