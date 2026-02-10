@@ -142,8 +142,12 @@ for (int i = 1; i < orderlines.Count(); i++)
     {
         orderDATA[9] += $"{orderDATA[9]},{orderDATA[j]}";
     }
-    //id datetime total status address paymentmethod paid
-    DateTime orderdatetime = Convert.ToDateTime($"{orderDATA[3]} {orderDATA[4]}");
+    DateTime orderdatetime = DateTime.ParseExact(
+    $"{orderDATA[3]} {orderDATA[4]}",
+    "dd/MM/yyyy HH:mm",
+    CultureInfo.InvariantCulture
+);
+
     Order order = new Order(Convert.ToInt32(orderDATA[0]), orderdatetime, Convert.ToDouble(orderDATA[7]), orderDATA[8], Convert.ToDateTime(orderDATA[6]), orderDATA[5], "-", true);
     string[] ordereditem = ordereditems[1].Split('|');
     foreach (string item in ordereditem)
@@ -458,7 +462,7 @@ void DisplayAllOrders()
             {
                 break;
             }
-        else if (itemnumber > selectedmenu.foodItems.Count())
+        else if (itemnumber < 0 || itemnumber > selectedmenu.foodItems.Count())
             {
                 Console.WriteLine("Invalid item number. Please try again.");
                 continue;
@@ -765,7 +769,11 @@ void ModifyExistingOrder()
                 Console.WriteLine("Invalid input. Please enter a number.");
                 continue;
             }
-            if (itemnumber > selectedmenu.foodItems.Count())
+            if (itemnumber == 0)
+            {
+                break;
+            }
+            if (itemnumber <0 || itemnumber > selectedmenu.foodItems.Count())
             {
                 Console.WriteLine("Invalid item number. Please try again.");
                 continue;
