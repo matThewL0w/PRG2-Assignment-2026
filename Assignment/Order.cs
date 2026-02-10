@@ -24,7 +24,7 @@ namespace Assignment
         public bool orderPaid { get; set; }
         public List<OrderedFoodItem> OrderedItems { get; } = new List<OrderedFoodItem>();
 
-
+        public Order() { }
         public Order(int id, DateTime dateTime, double total, string status, string address, string paymentMethod, bool paid)
         {
             orderId = id;
