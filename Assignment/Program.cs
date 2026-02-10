@@ -999,7 +999,7 @@ void ProcessOrder()
     }
 }
 
-    void BulkProcessing()
+    void BulkProcessing() // Hua Jay
     {
         int processedCounter = 0; // set up counters
         int rejectedCounter = 0;
@@ -1046,6 +1046,7 @@ void ProcessOrder()
         );
     }
 
+//matthew
     void DisplayTotalOrderAmount() //Assuming that 30% commission is already insided the order total
     {
         const double deliveryFee = 5.00;
