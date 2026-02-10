@@ -183,7 +183,7 @@ for (int i = 1; i < orderlines.Count(); i++)
     {
         if (restaurants[x].restaurantId == orderDATA[2]) //RestaurantId
         {
-            restaurants[x].orderQueue.Enqueue(order);
+            restaurants[x].orderQueue.Add(order);
             break;
         }
     }
@@ -229,12 +229,11 @@ while (true)
     }
     else if (choice == 5)
     {
-        //ModifyExistingOrder();
-        return;
+        ModifyExistingOrder();
     }
     else if (choice == 6)
     {
-        RemoveExistingOrder();
+        DeleteOrder();
     }
     else if (choice == 7)
     {
@@ -541,7 +540,7 @@ void DisplayAllOrders()
         createdorder.orderPaymentMethod = paymentmethod.ToUpper();
         Console.WriteLine($"Order {createdorder.orderId} created successfully! Status: {createdorder.orderStatus}");
         selectedcustomer.AddOrder(createdorder);
-        selectedrestaurant.orderQueue.Enqueue(createdorder);
+        selectedrestaurant.orderQueue.Add(createdorder);
         orderlist.Add(createdorder);
     }
 
@@ -645,103 +644,120 @@ void DeleteOrder()
     }
 }
 
-
-
-//void ModifyExistingOrder()
-//{
-//    Customer selectedcustomer = new Customer();
-//    Order selectedOrder = new Order();
-//    int pendingorders = 0;
-//    Console.WriteLine("Modify Order");
-//    Console.WriteLine("============");
-//    Console.Write("Enter Customer email: "); //public Order(int id, DateTime dateTime, double total, string status, string address, string paymentMethod, bool paid)
-//    string customeremail = Console.ReadLine();
-//    for (int i = 0; i < customers.Count(); i++)
-//    {
-//        if (customers[i].emailAddress == customeremail)
-//        {
-//            selectedcustomer = customers[i];
-//            break;
-//        }
-//        else if (i == customers.Count() - 1)
-//        {
-//            Console.WriteLine("Customer not found. Please register first.");
-//            return;
-//        }
-//    }
-//    foreach (Order order in selectedcustomer.orders)
-//    {
-//        if (order.orderStatus == "Pending")
-//        {
-//            pendingorders += 1;
-//        }
-//    }
-//    if (pendingorders == 0)
-//    {
-//        Console.WriteLine("No pending orders for this customer.");
-//        return;
-//    }
-//    Console.WriteLine("Pending Orders:");
-//    foreach (Order order in selectedcustomer.orders)
-//    {
-//        if (order.orderStatus == "Pending")
-//        {
-//            Console.WriteLine(order.orderId);
-//        }
-//    }
-//    Console.Write("Enter Order ID: ");
-//    string chosenorderId = Console.ReadLine();
-//    do
-//    {
-//        foreach (Order order in selectedcustomer.orders)
-//        {
-//            if (chosenorderId == Convert.ToString(order.orderId))
-//            {
-//                selectedOrder = order;
-//                break;
-//            }
-//        }
-//        Console.Write("Invalid order ID. Please enter a valid order ID: ");
-//        chosenorderId = Console.ReadLine();
-//    } while (true);
-//    Console.WriteLine("Address:");
-//    Console.WriteLine(selectedOrder.deliveryAddress);
-//    Console.WriteLine("Delivery Date/Time:");
-//    Console.WriteLine(selectedOrder.orderDateTime.ToString("dd/MM/yyyy HH:mm"));
-//    Console.Write("Modify: [1] Items [2] Address [3] Delivery Time: ");
-//    string choice = Console.ReadLine();
-//    if (choice == "1")
-//    {
-//        Console.WriteLine("Enter the order (number) to modify:");
-//        int itemnumber = Convert.ToInt32(Console.ReadLine());
-//        OrderedFoodItem SelectedItem = selectedOrder.OrderedItems[itemnumber - 1];
-//        Console.WriteLine($"Selected Item: {SelectedItem.itemName} - {SelectedItem.qtyOrdered}");
-//        Console.Write("Enter new quantity: ");
-//        int newQty = Convert.ToInt32(Console.ReadLine());
-//        SelectedItem.qtyOrdered = newQty;
-//        Console.WriteLine("Item quantity updated.");
-//        for (int i = 0; i < selectedOrder.OrderedItems.Count(); i++)
-//        {
-//            Console.WriteLine($"{i + 1}.{selectedOrder.OrderedItems[i].itemName} - {selectedOrder.OrderedItems[i].qtyOrdered}");
-//        }
-//    }
-//    else if (choice == "2")
-//    {
-//        Console.Write("Enter new delivery address: ");
-//        string newAddress = Console.ReadLine();
-//        selectedOrder.deliveryAddress = newAddress;
-//        Console.WriteLine("Delivery address updated.");
-//    }
-//    else if (choice == "3")
-//    {
-//        Console.Write("Enter new delivery date and time (dd/MM/yyyy HH:mm): ");
-//        DateTime newDateTime = Convert.ToDateTime(Console.ReadLine());
-//        selectedOrder.orderDateTime = newDateTime;
-//        Console.WriteLine("Delivery date and time updated.");
-//    }
-//    Console.WriteLine();
-//    Console.WriteLine($"Order {selectedOrder.orderId} updated. New Delivery Time: {selectedOrder.orderDateTime}");
-//}
+void ModifyExistingOrder()
+{
+    Customer selectedcustomer = new Customer();
+    Order selectedOrder = new Order();
+    int pendingorders = 0;
+    int customerposition = 0;
+    int restaurantposition = 0;
+    Console.WriteLine("Modify Order");
+    Console.WriteLine("============");
+    Console.Write("Enter Customer email: "); //public Order(int id, DateTime dateTime, double total, string status, string address, string paymentMethod, bool paid)
+    string customeremail = Console.ReadLine();
+    for (int i = 0; i < customers.Count(); i++)
+    {
+        if (customers[i].emailAddress == customeremail)
+        {
+            customerposition = i;
+            selectedcustomer = customers[i];
+            break;
+        }
+        else if (i == customers.Count() - 1)
+        {
+            Console.WriteLine("Customer not found. Please register first.");
+            return;
+        }
+    }
+    foreach (Order order in selectedcustomer.orders)
+    {
+        if (order.orderStatus == "Pending")
+        {
+            pendingorders += 1;
+        }
+    }
+    if (pendingorders == 0)
+    {
+        Console.WriteLine("No pending orders for this customer.");
+        return;
+    }
+    Console.WriteLine("Pending Orders:");
+    foreach (Order order in selectedcustomer.orders)
+    {
+        if (order.orderStatus == "Pending")
+        {
+            Console.WriteLine(order.orderId);
+        }
+    }
+    Console.Write("Enter Order ID: ");
+    string chosenorderId = Console.ReadLine();
+    bool valid = true;
+    do
+    {
+        foreach (Order order in selectedcustomer.orders)
+        {
+            if (chosenorderId == Convert.ToString(order.orderId))
+            {
+                selectedOrder = order;
+                valid = false;
+                break;
+            }
+        }
+        Console.Write("Invalid order ID. Please enter a valid order ID: ");
+        chosenorderId = Console.ReadLine();
+    } while (valid);
+    Console.WriteLine("Address:");
+    Console.WriteLine(selectedOrder.deliveryAddress);
+    Console.WriteLine("Delivery Date/Time:");
+    Console.WriteLine(selectedOrder.orderDateTime.ToString("dd/MM/yyyy HH:mm"));
+    Console.Write("Modify: [1] Items [2] Address [3] Delivery Time: ");
+    string choice = Console.ReadLine();
+    if (choice == "1")
+    {
+        Console.WriteLine("Enter the order (number) to modify:");
+        int itemnumber = Convert.ToInt32(Console.ReadLine());
+        OrderedFoodItem SelectedItem = selectedOrder.OrderedItems[itemnumber - 1];
+        Console.WriteLine($"Selected Item: {SelectedItem.itemName} - {SelectedItem.qtyOrdered}");
+        Console.Write("Enter new quantity: ");
+        int newQty = Convert.ToInt32(Console.ReadLine());
+        SelectedItem.qtyOrdered = newQty;
+        Console.WriteLine("Item quantity updated.");
+        for (int i = 0; i < selectedOrder.OrderedItems.Count(); i++)
+        {
+            Console.WriteLine($"{i + 1}.{selectedOrder.OrderedItems[i].itemName} - {selectedOrder.OrderedItems[i].qtyOrdered}");
+        }
+    }
+    else if (choice == "2")
+    {
+        Console.Write("Enter new delivery address: ");
+        string newAddress = Console.ReadLine();
+        //didn't validate address as lecturer said it wasn't necessary
+        selectedOrder.deliveryAddress = newAddress;
+        Console.WriteLine("Delivery address updated.");
+    }
+    else if (choice == "3")
+    {
+        Console.Write("Enter new delivery date and time (dd/MM/yyyy HH:mm): ");
+        DateTime newDateTime;
+        do
+        {
+            try
+            {
+                newDateTime = Convert.ToDateTime(Console.ReadLine());
+                selectedOrder.orderDateTime = newDateTime;
+                break;
+            }
+            catch (FormatException)
+            {
+                Console.Write("Invalid date/time format. Please use dd/MM/yyyy HH:mm: ");
+            }
+        } while (true);
+        selectedOrder.orderDateTime = newDateTime;
+        Console.WriteLine("Delivery date and time updated.");
+    }
+    Console.WriteLine();
+    Console.WriteLine($"Order {selectedOrder.orderId} updated. New Delivery Time: {selectedOrder.orderDateTime}");
+}
 
 //    Customer CorrectCustomer = null;
 //    Console.WriteLine("Modify Order");
