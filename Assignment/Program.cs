@@ -454,7 +454,11 @@ void DisplayAllOrders()
                 Console.WriteLine("Invalid input. Please enter a number.");
                 continue;
             }
-            if (itemnumber > selectedmenu.foodItems.Count())
+            if (itemnumber == 0)
+            {
+                break;
+            }
+        else if (itemnumber > selectedmenu.foodItems.Count())
             {
                 Console.WriteLine("Invalid item number. Please try again.");
                 continue;
@@ -479,7 +483,7 @@ void DisplayAllOrders()
                 quantity
             );
             allorderedfooditems.Add(orderedfooditem);
-        } while (itemnumber != 0);
+        } while (true);
         if (allorderedfooditems.Count() == 0)
         {
             Console.WriteLine("No items ordered. Order creation cancelled.");
