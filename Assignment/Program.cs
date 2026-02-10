@@ -707,9 +707,9 @@ void ModifyExistingOrder()
     }
     Console.Write("Enter Order ID: ");
     string chosenorderId = Console.ReadLine();
-    bool valid = true;
     do
     {
+        bool valid = true;
         foreach (Order order in selectedcustomer.orders)
         {
             if (chosenorderId == Convert.ToString(order.orderId))
@@ -719,9 +719,13 @@ void ModifyExistingOrder()
                 break;
             }
         }
+        if (valid == false)
+        {
+            break;
+        }
         Console.Write("Invalid order ID. Please enter a valid order ID: ");
         chosenorderId = Console.ReadLine();
-    } while (valid);
+    } while (true);
     for (int i = 0; i < restaurants.Count(); i++)
     {
         if (restaurants[i].orderQueue.Contains(selectedOrder))
