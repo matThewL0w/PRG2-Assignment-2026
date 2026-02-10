@@ -240,6 +240,7 @@ while (true)
     Console.WriteLine("0. Exit");
     Console.Write("Enter your choice: ");
     int choice = Convert.ToInt32(Console.ReadLine());
+    Console.WriteLine();
     if (choice == 1)
     {
         DisplayAllItems();
@@ -467,6 +468,7 @@ void DisplayAllOrders()
             //    return;
             //} //unit number validation
         }
+        Console.WriteLine();
         Console.WriteLine("Available Food Items: ");
         selectedrestaurant.menus[0].DisplayFoodItems();
         Menu selectedmenu = selectedrestaurant.menus[0];
@@ -642,7 +644,7 @@ void DeleteOrder()
         Console.WriteLine("Invalid Order ID.");
         return;
     }
-
+    Console.WriteLine();
     Console.WriteLine($"Customer: {selectedCustomer.customerName}");
     Console.WriteLine("Ordered Items:");
     selectedOrder.DisplayOrderedFoodItems();
@@ -656,7 +658,7 @@ void DeleteOrder()
     {
         Console.Write("Confirm deletion? [Y/N]: ");
         confirm = Console.ReadLine().Trim().ToUpper();
-
+        Console.WriteLine();
         if (confirm == "Y" || confirm == "N")
             break;
 
@@ -785,8 +787,10 @@ void ModifyExistingOrder()
     Console.WriteLine(selectedOrder.deliveryAddress);
     Console.WriteLine("Delivery Date/Time:");
     Console.WriteLine(selectedOrder.orderDateTime.ToString("dd/MM/yyyy HH:mm"));
+    Console.WriteLine();
     Console.Write("Modify: [1] Items [2] Address [3] Delivery Time: ");
     string choice = Console.ReadLine();
+    Console.WriteLine();
     if (choice == "1")
     {
         Restaurant selectedrestaurant = restaurants[restaurantposition];
@@ -899,6 +903,8 @@ void ProcessOrder()
     Console.Write("Enter Restaurant ID: ");
     string restaurantId = Console.ReadLine();
 
+    Console.WriteLine();
+
     Restaurant selectedRestaurant = null;
 
     foreach (Restaurant restaurant in restaurants)
@@ -934,7 +940,7 @@ void ProcessOrder()
             selectedRestaurant.orderQueue.Enqueue(order);
             continue;
         }
-
+        
         Console.WriteLine($"Order {order.orderId}:");
 
         // find customer name
@@ -947,7 +953,7 @@ void ProcessOrder()
                 break;
             }
         }
-
+        
         Console.WriteLine($"Customer: {customerName}");
         Console.WriteLine("Ordered Items:");
         order.DisplayOrderedFoodItems();
@@ -1036,8 +1042,9 @@ void ProcessOrder()
             percentageProcessed = (double)processedCounter * 100 / totalCounter;
         }
 
-
-        Console.WriteLine($"Total Pending Orders Processed: {processedCounter}");
+    Console.WriteLine("Bulk Order Processing Summary");
+    Console.WriteLine("=============================");
+    Console.WriteLine($"Total Pending Orders Processed: {processedCounter}");
         Console.WriteLine(
             $"Total Orders 'Preparing' vs 'Rejected': {preparingCounter} vs {rejectedCounter}"
         );
