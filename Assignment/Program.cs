@@ -943,97 +943,91 @@ void ModifyExistingOrder()
 
 
 void ProcessOrder()
+{
+    Console.WriteLine("Process Order");
+    Console.WriteLine("=============");
+    Console.Write("Enter Restaurant ID: ");
+    string restaurantId = Console.ReadLine();
+
+    Restaurant selectedRestaurant = null;
+
+    foreach (Restaurant restaurant in restaurants)
     {
-        Console.WriteLine("Process Order");
-        Console.WriteLine("=============");
-        Console.Write("Enter Restaurant ID: ");
-        string restaurantId = Console.ReadLine();
-        Restaurant SelectedRestaurant = null;
-        Console.WriteLine();
-        foreach (Restaurant restaurant in restaurants)
+        if (restaurant.restaurantId == restaurantId)
         {
-            if (restaurant.restaurantId == restaurantId)
+            selectedRestaurant = restaurant;
+            break;
+        }
+    }
+
+    if (selectedRestaurant == null)
+    {
+        Console.WriteLine("Restaurant not found.");
+        return;
+    }
+
+    if (selectedRestaurant.orderQueue.Count == 0)
+    {
+        Console.WriteLine("No pending orders for this restaurant.");
+        return;
+    }
+
+    // 🔹 LOOP THROUGH LIST (no dequeue anymore)
+    foreach (Order order in selectedRestaurant.orderQueue)
+    {
+        Console.WriteLine($"Order {order.orderId}:");
+
+        // find customer name
+        string customerName = "Unknown";
+        foreach (Customer c in customers)
+        {
+            if (c.orders.Contains(order))
             {
-                SelectedRestaurant = restaurant;
+                customerName = c.customerName;
                 break;
             }
         }
-        if (SelectedRestaurant == null)
+
+        Console.WriteLine($"Customer: {customerName}");
+        Console.WriteLine("Ordered Items:");
+        order.DisplayOrderedFoodItems();
+        Console.WriteLine($"Delivery date/time: {order.orderDateTime:dd/MM/yyyy HH:mm}");
+        Console.WriteLine($"Total Amount: ${order.orderTotal:F2}");
+        Console.WriteLine($"Order Status: {order.orderStatus}");
+
+        Console.Write("[C]onfirm / [R]eject / [S]kip / [D]eliver: ");
+        string choice = Console.ReadLine().ToUpper();
+
+        if (choice == "C" && order.orderStatus == "Pending")
         {
-            Console.WriteLine("Restaurant not found.");
-            return;
-    }
-    if (SelectedRestaurant.orderQueue.Count == 0 )
+            order.orderStatus = "Preparing";
+            Console.WriteLine($"Order {order.orderId} confirmed. Status: Preparing");
+        }
+        else if (choice == "R" && order.orderStatus == "Pending")
         {
-            Console.WriteLine("No pending orders for this restaurant.");
-            return;
+            order.orderStatus = "Rejected";
+            refundStack.Push(order);
+            Console.WriteLine($"Order {order.orderId} rejected. Refund processed.");
+        }
+        else if (choice == "S" && order.orderStatus == "Cancelled")
+        {
+            Console.WriteLine("Order skipped.");
+        }
+        else if (choice == "D" && order.orderStatus == "Preparing")
+        {
+            order.orderStatus = "Delivered";
+            Console.WriteLine($"Order {order.orderId} delivered.");
+        }
+        else
+        {
+            Console.WriteLine("Invalid action for current order status.");
         }
 
-        int orderCount = SelectedRestaurant.orderQueue.Count;
-
-        for (int i = 0; i < orderCount; i++)
-        {
-            Order order = SelectedRestaurant.orderQueue.Dequeue();
-
-            Console.WriteLine($"Order {order.orderId}:");
-
-            // Find customer name
-            string customerName = "Unknown";
-            foreach (Customer c in customers)
-            {
-                if (c.orders.Contains(order))
-                {
-                    customerName = c.customerName;
-                    break;
-                }
-            }
-
-            Console.WriteLine($"Customer: {customerName}");
-            Console.WriteLine("Ordered Items:");
-            order.DisplayOrderedFoodItems();
-            Console.WriteLine($"Delivery date/time: {order.orderDateTime:dd/MM/yyyy HH:mm}");
-            Console.WriteLine($"Total Amount: ${order.orderTotal:F2}");
-            Console.WriteLine($"Order Status: {order.orderStatus}");
-
-            Console.Write("[C]onfirm / [R]eject / [S]kip / [D]eliver: ");
-            string choice = Console.ReadLine().ToUpper();
-
-            if (choice == "C" && order.orderStatus == "Pending")
-            {
-                order.orderStatus = "Preparing";
-                Console.WriteLine($"Order {order.orderId} confirmed. Status: Preparing");
-            }
-            else if (choice == "R" && order.orderStatus == "Pending")
-            {
-                order.orderStatus = "Rejected";
-                refundStack.Push(order);
-                Console.WriteLine($"Order {order.orderId} rejected. Refund processed.");
-            }
-            else if (choice == "S" && order.orderStatus == "Cancelled")
-            {
-                Console.WriteLine("Order skipped.");
-            }
-            else if (choice == "D" && order.orderStatus == "Preparing")
-            {
-                order.orderStatus = "Delivered";
-                Console.WriteLine($"Order {order.orderId} delivered.");
-            }
-            else
-            {
-                Console.WriteLine("Invalid action for current order status.");
-            }
-
-            Console.WriteLine();
-
-            SelectedRestaurant.orderQueue.Enqueue(order);
-
-
-
-
-        }
+        Console.WriteLine();
     }
+}
 
-    void DisplayTotalOrderAmount() //Assuming that 30% commission is already insided the order total
+void DisplayTotalOrderAmount() //Assuming that 30% commission is already insided the order total
 {
         const double deliveryFee = 5.00;
         double grandTotal = 0.0;
