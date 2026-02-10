@@ -258,7 +258,7 @@ while (true)
     }
     else if (choice == 5)
     {
-        //ModifyExistingOrder();
+        ModifyExistingOrder();
     }
     else if (choice == 6)
     {
@@ -545,7 +545,7 @@ void DisplayAllOrders()
         }
         double totalamount = createdorder.CalculateOrderTotal() + 5;
         Console.WriteLine();
-        Console.WriteLine($"Order Total: ${createdorder.CalculateOrderTotal:F2} + $5.00 (delivery) = ${totalamount:F2}");
+        Console.WriteLine($"Order Total: ${createdorder.CalculateOrderTotal():F2} + $5.00 (delivery) = ${totalamount:F2}");
         Console.Write("Proceed to payment? [Y/N]: ");
         string paymentchoice = Console.ReadLine();
         if (paymentchoice.ToUpper() == "Y")
