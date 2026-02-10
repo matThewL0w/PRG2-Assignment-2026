@@ -19,8 +19,8 @@ namespace Assignment
         public string restaurantName { get; set; }
         public string restaurantEmail { get; set; }
         public List<Menu> menus { get; set; }
-        private List<Order> orders = new List<Order>();
-        public List<Order> orderQueue { get; set; } = new List<Order>();
+        private Queue<Order> orders = new Queue<Order>();
+        public Queue<Order> orderQueue { get; set; } = new Queue<Order>();
         private List<SpecialOffer> specialOffers = new List<SpecialOffer>();
         public List<SpecialOffer> SpecialOffers {get; set;}
         public Restaurant() { }

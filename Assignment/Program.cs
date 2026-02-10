@@ -184,7 +184,7 @@ for (int i = 1; i < orderlines.Count(); i++)
     {
         if (restaurants[x].restaurantId == orderDATA[2]) //RestaurantId
         {
-            restaurants[x].orderQueue.Add(order);
+            restaurants[x].orderQueue.Enqueue(order);
             break;
         }
     }
@@ -454,7 +454,11 @@ void DisplayAllOrders()
                 Console.WriteLine("Invalid input. Please enter a number.");
                 continue;
             }
-            if (itemnumber > selectedmenu.foodItems.Count())
+            if (itemnumber == 0)
+            {
+                break;
+            }
+        else if (itemnumber > selectedmenu.foodItems.Count())
             {
                 Console.WriteLine("Invalid item number. Please try again.");
                 continue;
@@ -479,7 +483,7 @@ void DisplayAllOrders()
                 quantity
             );
             allorderedfooditems.Add(orderedfooditem);
-        } while (itemnumber != 0);
+        } while (true);
         if (allorderedfooditems.Count() == 0)
         {
             Console.WriteLine("No items ordered. Order creation cancelled.");
@@ -542,7 +546,7 @@ void DisplayAllOrders()
         createdorder.orderPaymentMethod = paymentmethod.ToUpper();
         Console.WriteLine($"Order {createdorder.orderId} created successfully! Status: {createdorder.orderStatus}");
         selectedcustomer.AddOrder(createdorder);
-        selectedrestaurant.orderQueue.Add(createdorder);
+        selectedrestaurant.orderQueue.Enqueue(createdorder);
         orderlist.Add(createdorder);
     }
 
@@ -703,9 +707,9 @@ void ModifyExistingOrder()
     }
     Console.Write("Enter Order ID: ");
     string chosenorderId = Console.ReadLine();
-    bool valid = true;
     do
     {
+        bool valid = true;
         foreach (Order order in selectedcustomer.orders)
         {
             if (chosenorderId == Convert.ToString(order.orderId))
@@ -715,9 +719,13 @@ void ModifyExistingOrder()
                 break;
             }
         }
+        if (valid == false)
+        {
+            break;
+        }
         Console.Write("Invalid order ID. Please enter a valid order ID: ");
         chosenorderId = Console.ReadLine();
-    } while (valid);
+    } while (true);
     for (int i = 0; i < restaurants.Count(); i++)
     {
         if (restaurants[i].orderQueue.Contains(selectedOrder))
@@ -1065,6 +1073,7 @@ void ProcessOrder()
             if (timeLeft.TotalMinutes < 60)
             {
                 order.orderStatus = "Rejected";
+                refundStack.Push(order);
                 rejectedCounter++;
             }
             else
