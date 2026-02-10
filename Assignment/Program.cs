@@ -1067,5 +1067,3 @@ void DisplayTotalOrderAmount() //Assuming that 30% commission is already insided
         Console.WriteLine($"Final Amount Gruberoo Earns: ${(grandTotal - refundTotal):F2}");
 
     }
-
-
