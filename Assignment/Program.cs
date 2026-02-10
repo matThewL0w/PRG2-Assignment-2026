@@ -222,11 +222,11 @@ while (true)
     }
     else if (choice == 3)
     {
-        //OrderCreation();
+        OrderCreation();
     }
     else if (choice == 4)
     {
-        //ProcessOrder();
+        ProcessOrder();
     }
     else if (choice == 5)
     {
