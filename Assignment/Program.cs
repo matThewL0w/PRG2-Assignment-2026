@@ -19,6 +19,30 @@ List<Customer> customers = new List<Customer>();
 List<FoodItem> foodlist = new List<FoodItem>();
 List<Order> orderlist = new List<Order>();
 Stack<Order> refundStack = new Stack<Order>();
+void YearCheck()
+{
+    int currentYear = DateTime.Now.Year;
+
+    orderlist.RemoveAll(order =>
+        order.orderDateTime.Year < currentYear - 1
+    );
+
+    Stack<Order> tempStack = new Stack<Order>();
+
+    while (refundStack.Count > 0)
+    {
+        Order order = refundStack.Pop();
+        if (order.orderDateTime.Year >= currentYear - 1)
+        {
+            tempStack.Push(order);
+        }
+    }
+
+    while (tempStack.Count > 0)
+    {
+        refundStack.Push(tempStack.Pop());
+    }
+}
 
 void SaveDataOnExit()
 {
@@ -251,6 +275,7 @@ while (true)
 
     else if (choice == 0)
     {
+        YearCheck();
         SaveDataOnExit();
         Console.WriteLine("Exiting the system. Goodbye!");
         break;
