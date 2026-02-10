@@ -143,7 +143,8 @@ for (int i = 1; i < orderlines.Count(); i++)
         orderDATA[9] += $"{orderDATA[9]},{orderDATA[j]}";
     }
     //id datetime total status address paymentmethod paid
-    Order order = new Order(Convert.ToInt32(orderDATA[0]), Convert.ToDateTime(orderDATA[6]), Convert.ToDouble(orderDATA[7]), orderDATA[8], orderDATA[5], "-", true);
+    DateTime orderdatetime = Convert.ToDateTime($"{orderDATA[3]} {orderDATA[4]}");
+    Order order = new Order(Convert.ToInt32(orderDATA[0]), orderdatetime, Convert.ToDouble(orderDATA[7]), orderDATA[8], Convert.ToDateTime(orderDATA[6]), orderDATA[5], "-", true);
     string[] ordereditem = ordereditems[1].Split('|');
     foreach (string item in ordereditem)
     {
@@ -497,9 +498,10 @@ void DisplayAllOrders()
         }
         Order createdorder = new Order(
         orderlist[^1].orderId + 1,
-        Convert.ToDateTime($"{deliveryDate} {deliveryTime}"),
+        DateTime.Now,
         0.0,
         "Pending",
+        Convert.ToDateTime($"{deliveryDate} {deliveryTime}"),
         deliveryAddress,
         specialreq,
         false
@@ -1025,6 +1027,52 @@ void ProcessOrder()
 
         Console.WriteLine();
     }
+}
+
+void BulkProcessing()
+{
+    int processedCounter = 0; // set up counters
+    int rejectedCounter = 0;
+    int preparingCounter = 0;
+    int totalCounter = 0;
+    foreach (Order order in orderlist)
+    {
+        totalCounter++;
+
+        if (order.orderStatus == "Pending")
+        {
+            processedCounter++;
+
+            TimeSpan timeLeft = order.deliveryDateTime - DateTime.Now;
+
+            if (timeLeft.TotalMinutes < 60)
+            {
+                order.orderStatus = "Rejected";
+                rejectedCounter++;
+            }
+            else
+            {
+                order.orderStatus = "Preparing";
+                preparingCounter++;
+            }
+        }
+    }
+
+    double percentageProcessed = 0;
+
+    if (totalCounter > 0)
+    {
+        percentageProcessed = (double)processedCounter * 100 / totalCounter;
+    }
+
+
+    Console.WriteLine($"Total Pending Orders Processed: {processedCounter}");
+    Console.WriteLine(
+        $"Total Orders 'Preparing' vs 'Rejected': {preparingCounter} vs {rejectedCounter}"
+    );
+    Console.WriteLine(
+        $"Percentage of Automatically Processed Orders: {percentageProcessed:F2}%"
+    );
 }
 
 void DisplayTotalOrderAmount() //Assuming that 30% commission is already insided the order total

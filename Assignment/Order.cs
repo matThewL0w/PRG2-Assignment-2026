@@ -19,18 +19,20 @@ namespace Assignment
         public DateTime orderDateTime { get; set; }
         public double orderTotal { get; set; }
         public string orderStatus { get; set; }
+        public DateTime deliveryDateTime { get; set; }
         public string deliveryAddress { get; set; }
         public string orderPaymentMethod { get; set; }
         public bool orderPaid { get; set; }
         public List<OrderedFoodItem> OrderedItems { get; } = new List<OrderedFoodItem>();
 
         public Order() { }
-        public Order(int id, DateTime dateTime, double total, string status, string address, string paymentMethod, bool paid)
+        public Order(int id, DateTime dateTime, double total, string status, DateTime deliverytime, string address, string paymentMethod, bool paid)
         {
             orderId = id;
             orderDateTime = dateTime;
             orderTotal = total;
             orderStatus = status;
+            deliveryDateTime = deliverytime;
             deliveryAddress = address;
             orderPaymentMethod = paymentMethod;
             orderPaid = paid;
