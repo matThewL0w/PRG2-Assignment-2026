@@ -165,7 +165,7 @@ while (true)
     }
     else if (choice == 5)
     {
-        //ModifyExistingOrder();
+        ModifyExistingOrder();
         return;
     }
     else if (choice == 6)
@@ -547,6 +547,8 @@ void ModifyExistingOrder()
     Customer selectedcustomer = new Customer();
     Order selectedOrder = new Order();
     int pendingorders = 0;
+    int customerposition = 0;
+    int restaurantposition = 0;
     Console.WriteLine("Modify Order");
     Console.WriteLine("============");
     Console.Write("Enter Customer email: "); //public Order(int id, DateTime dateTime, double total, string status, string address, string paymentMethod, bool paid)
@@ -555,6 +557,7 @@ void ModifyExistingOrder()
     {
         if (customers[i].emailAddress == customeremail)
         {
+            customerposition = i;
             selectedcustomer = customers[i];
             break;
         }
@@ -624,13 +627,27 @@ void ModifyExistingOrder()
     {
         Console.Write("Enter new delivery address: ");
         string newAddress = Console.ReadLine();
+        //didn't validate address as lecturer said it wasn't necessary
         selectedOrder.deliveryAddress = newAddress;
         Console.WriteLine("Delivery address updated.");
     }
     else if (choice == "3")
     {
         Console.Write("Enter new delivery date and time (dd/MM/yyyy HH:mm): ");
-        DateTime newDateTime = Convert.ToDateTime(Console.ReadLine());
+        DateTime newDateTime;
+        do
+        {
+            try
+            {
+                newDateTime = Convert.ToDateTime(Console.ReadLine());
+                selectedOrder.orderDateTime = newDateTime;
+                break;
+            }
+            catch (FormatException)
+            {
+                Console.Write("Invalid date/time format. Please use dd/MM/yyyy HH:mm: ");
+            }
+        } while (true);
         selectedOrder.orderDateTime = newDateTime;
         Console.WriteLine("Delivery date and time updated.");
     }
