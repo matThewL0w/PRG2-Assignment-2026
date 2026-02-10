@@ -184,7 +184,7 @@ for (int i = 1; i < orderlines.Count(); i++)
     {
         if (restaurants[x].restaurantId == orderDATA[2]) //RestaurantId
         {
-            restaurants[x].orderQueue.Add(order);
+            restaurants[x].orderQueue.Enqueue(order);
             break;
         }
     }
@@ -546,7 +546,7 @@ void DisplayAllOrders()
         createdorder.orderPaymentMethod = paymentmethod.ToUpper();
         Console.WriteLine($"Order {createdorder.orderId} created successfully! Status: {createdorder.orderStatus}");
         selectedcustomer.AddOrder(createdorder);
-        selectedrestaurant.orderQueue.Add(createdorder);
+        selectedrestaurant.orderQueue.Enqueue(createdorder);
         orderlist.Add(createdorder);
     }
 
@@ -1065,6 +1065,7 @@ void BulkProcessing()
             if (timeLeft.TotalMinutes < 60)
             {
                 order.orderStatus = "Rejected";
+                refundStack.Push(order);
                 rejectedCounter++;
             }
             else
